@@ -1,24 +1,17 @@
 package rules;
 
-import daos.Animal;
+import condition.Equal;
+import knowledge.Animal;
+import knowledge.Knowledge;
 import utils.Amount;
 import utils.AnimalType;
 import utils.Hair;
 
-public class CatsHotnessRule implements Rule {
-    private final Animal animal;
+public class CatsHotnessRule extends Rule {
 
-    public CatsHotnessRule(Animal animal) {
-        this.animal = animal;
-    }
-
-    @Override
-    public Boolean meetsConditions() {
-        return (animal.getType() == AnimalType.CAT && animal.getHair() == Hair.SHORT);
-    }
-
-    @Override
-    public void fireRule() {
-        animal.setHeat(Amount.MEDIUM);
+    public CatsHotnessRule() {
+        premises.put("type", new Equal(AnimalType.CAT));
+        premises.put("hair",new Equal(Hair.SHORT));
+        implications.put("heat", Amount.MEDIUM);
     }
 }

@@ -1,4 +1,4 @@
-package daos;
+package knowledge;
 
 import utils.*;
 

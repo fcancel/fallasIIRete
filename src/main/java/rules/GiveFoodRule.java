@@ -1,22 +1,14 @@
 package rules;
 
-import daos.Animal;
+import condition.BiggerThan;
+import condition.Equal;
 import utils.Size;
 
-public class GiveFoodRule implements Rule {
-    private final Animal animal;
+public class GiveFoodRule extends Rule {
 
-    public GiveFoodRule(Animal animal) {
-        this.animal = animal;
-    }
-
-    @Override
-    public Boolean meetsConditions() {
-        return (animal.getWeight() > 20 && animal.getSize() == Size.BIG);
-    }
-
-    @Override
-    public void fireRule() {
-        animal.setGiveFood(true);
+    public GiveFoodRule() {
+        premises.put("weight", new BiggerThan(20));
+        premises.put("size", new Equal(Size.BIG));
+        implications.put("giveFood", true);
     }
 }
