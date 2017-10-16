@@ -7,7 +7,7 @@ import rules.Rule;
 public class FeedlotTemperatureHot extends Rule {
 
     public FeedlotTemperatureHot () {
-        addPremise(Corral.TEMPERATURA.name(), new MoreThan(28));
+        addPremise(Corral.TEMPERATURE.name(), new MoreThan(28));
         implications.put(Corral.FACTOR_MATERIA_SECA.name(), 0.95);
     }
 }

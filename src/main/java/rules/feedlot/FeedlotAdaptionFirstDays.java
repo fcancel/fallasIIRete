@@ -7,7 +7,7 @@ import rules.Rule;
 public class FeedlotAdaptionFirstDays extends Rule {
 
     public FeedlotAdaptionFirstDays () {
-        addPremise(Corral.DIA.name(), new LessThan(6));
-        implications.put(Corral.PORCENTAJE_PESO_MATERIA_SECA.name(), 0.01);
+        addPremise(Corral.DAY.name(), new LessThan(6));
+        implications.put(Corral.PORCENTAGE_WEIGHT_MATERIA_SECA.name(), 0.01);
     }
 }

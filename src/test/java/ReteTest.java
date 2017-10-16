@@ -72,40 +72,73 @@ public class ReteTest {
         Assert.assertTrue(animal.hasKeyValue("happiness", Amount.HIGH));
     }
 
-    @Test
-    public void testFeedlotDiaUnoCalurosoForward() {
-        Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(30, 1, 220, 29);
-        List<Rule> rules = FeedlotRulesBuilder.build(corral);
-        ReteAlgorithm rete = new ForwardChain(rules, corral);
+    private void testCustomFeedlotForward(int headCount, int day, double initialWeight, int temperature, FeedlotFood expectedFood) {
+        Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(headCount, day, initialWeight, temperature);
+        ReteAlgorithm rete = new ForwardChain(FeedlotRulesBuilder.build(corral), corral);
         rete.runReteAlgorithm();
 
         FeedlotFood feedlotFood = FoodBuilder.buildFeedlotFood(corral);
-        FeedlotFood expectedFeedlotFood = createExpectedFeedlotFoodDiaUnoCaluroso();
 
-        Assert.assertTrue(feedlotFood.equals(expectedFeedlotFood));
+        Assert.assertTrue(feedlotFood.equals(expectedFood));
     }
 
-    private FeedlotFood createExpectedFeedlotFoodDiaUnoCaluroso() {
+    private FeedlotFood customExpectedFeedlotFood(double materiaSeca, double siloSorgo, double maiz,
+                                                  double expellerSoja, double premezclaMineral, double humidity) {
         FeedlotFood food = new FeedlotFood();
 
-        food.setMateriaSeca(62.7);
-        food.setSiloSorgo(30.1);
-        food.setMaiz(23.83);
-        food.setExpellerSoja(7.77);
-        food.setPremezclaMineral(1.0);
-        food.setHumidity(38.43);
+        food.setMateriaSeca(materiaSeca);
+        food.setSiloSorgo(siloSorgo);
+        food.setMaiz(maiz);
+        food.setExpellerSoja(expellerSoja);
+        food.setPremezclaMineral(premezclaMineral);
+        food.setHumidity(humidity);
 
         return food;
     }
 
     @Test
-    public void testFeedlotDiaUnoCalurosoBackward() {
-        Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(30, 1, 220, 29);
-        List<Rule> rules = FeedlotRulesBuilder.build(corral);
-        ReteAlgorithm rete = new BackwardChain(rules, corral, Corral.PORCENTAJE_PESO_MATERIA_SECA.name(), 0.01);
-        rete.runReteAlgorithm();
-
-        Assert.assertTrue(corral.hasKeyValue(Corral.PORCENTAJE_PESO_MATERIA_SECA.name(), 0.01));
+    public void testFeedlotDayOneHotForward() {
+        testCustomFeedlotForward(30, 1, 220, 29,
+                customExpectedFeedlotFood(62.7, 30.1, 23.83, 7.77, 1.0, 38.43));
     }
 
+    @Test
+    public void testFeedlotDayTenHotForward() {
+        testCustomFeedlotForward(30, 10, 220, 30,
+                customExpectedFeedlotFood(125.40, 60.19, 47.65, 15.55, 2.01, 76.86));
+    }
+
+    @Test
+    public void testFeedlotDayTwentyColdForward() {
+        testCustomFeedlotForward(30, 20, 220, 10,
+                customExpectedFeedlotFood(207.90, 76.92, 101.87, 25.47, 3.64, 102.40));
+    }
+
+    @Test
+    public void testFeedlotDayTwentyAverageForward() {
+        testCustomFeedlotForward(30, 20, 220, 25,
+                customExpectedFeedlotFood(198.00, 73.26, 97.02, 24.25, 3.47, 97.52));
+    }
+
+    @Test
+    public void testFeedlotDayTwentyHotForward() {
+        testCustomFeedlotForward(30, 20, 220, 30,
+                customExpectedFeedlotFood(188.10, 69.60, 92.17, 23.04, 3.29, 92.65));
+    }
+
+    @Test
+    public void testFeedlotDayFiftyColdForward() {
+        testCustomFeedlotForward(30, 50, 220, 10,
+                customExpectedFeedlotFood(228.38, 60.52, 136.57, 27.41, 3.88, 84.47));
+    }
+
+    @Test
+    public void testFeedlotDayOneHotBackward() {
+        Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(30, 1, 220, 29);
+        List<Rule> rules = FeedlotRulesBuilder.build(corral);
+        ReteAlgorithm rete = new BackwardChain(rules, corral, Corral.PORCENTAGE_WEIGHT_MATERIA_SECA.name(), 0.01);
+        rete.runReteAlgorithm();
+
+        Assert.assertTrue(corral.hasKeyValue(Corral.PORCENTAGE_WEIGHT_MATERIA_SECA.name(), 0.01));
+    }
 }
