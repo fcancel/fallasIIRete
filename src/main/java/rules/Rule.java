@@ -1,16 +1,17 @@
 package rules;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import condition.Condition;
 import knowledge.Knowledge;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Rule {
-    protected HashMap<String, Condition> premises = new HashMap<>();
+    protected List<HashMap<String, Condition>> premises = new LinkedList<>();
     protected HashMap<String, Object> implications = new HashMap<>();
 
-    public HashMap<String, Condition> getPremises() {
+    public List<HashMap<String, Condition>> getPremises() {
         return premises;
     }
 
@@ -18,14 +19,16 @@ public class Rule {
         return implications.get(key);
     }
 
-    public Boolean knowledgeMeetsPremise(Knowledge knowledge, String key) {
-        return premises.get(key).meetsCondition(knowledge.getValue(key));
+    public Boolean knowledgeMeetsGivenPremise(Knowledge knowledge, String key, HashMap<String, Condition> premise) {
+        return (premise.get(key) != null) ? premise.get(key).meetsCondition(knowledge.getValue(key)) : false;
     }
 
     public Boolean meetsPremises(Knowledge knowledge) {
         Boolean meetsPremises = true;
-        for(String key : premises.keySet()) {
-            meetsPremises = meetsPremises && knowledgeMeetsPremise(knowledge, key);
+        for(HashMap<String, Condition> premise : premises) {
+            for(String key : premise.keySet()) {
+                meetsPremises = meetsPremises && knowledgeMeetsGivenPremise(knowledge, key, premise);
+            }
         }
         return meetsPremises;
     }
@@ -38,6 +41,12 @@ public class Rule {
 
     public Boolean hasImplication(String implicationKey, Object implicationValue) {
         return (implications.containsKey(implicationKey)) ? implications.get(implicationKey) == (implicationValue) : false;
+    }
+
+    protected void addPremise(String key, Condition value) {
+        HashMap<String, Condition> premise = new HashMap<String, Condition>();
+        premise.put(key, value);
+        premises.add(premise);
     }
 
 }

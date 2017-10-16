@@ -1,14 +1,15 @@
-package rules;
+package rules.animals;
 
-import condition.BiggerThan;
+import condition.MoreThan;
 import condition.Equal;
+import rules.Rule;
 import utils.Size;
 
 public class GiveFoodRule extends Rule {
 
     public GiveFoodRule() {
-        premises.put("weight", new BiggerThan(20));
-        premises.put("size", new Equal(Size.BIG));
+        addPremise("weight", new MoreThan(20));
+        addPremise("size", new Equal(Size.BIG));
         implications.put("giveFood", true);
     }
 }

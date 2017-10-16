@@ -1,11 +1,12 @@
-package rules;
+package rules.animals;
 
 import condition.Equal;
+import rules.Rule;
 import utils.Amount;
 
 public class AnimalHappinessRule extends Rule {
     public AnimalHappinessRule() {
-        premises.put("giveFood", new Equal(true));
+        addPremise("giveFood", new Equal(true));
         implications.put("happiness", Amount.HIGH);
     }
 }

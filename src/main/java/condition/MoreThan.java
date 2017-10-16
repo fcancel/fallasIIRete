@@ -1,8 +1,8 @@
 package condition;
 
-public class BiggerThan extends Condition {
+public class MoreThan extends Condition {
 
-    public BiggerThan(Object value) {
+    public MoreThan(Object value) {
         this.value = value;
     }
 

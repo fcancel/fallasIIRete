@@ -28,12 +28,15 @@ public class BackwardChain implements ReteAlgorithm {
     private void runBackwardChain(String implicationKey, Object implicationValue) {
         for(Rule rule : rules) {
             if(rule.hasImplication(implicationKey, implicationValue)) {
-                HashMap<String, Condition> premises = rule.getPremises();
-                for(String key : premises.keySet()) {
-                    if(!rule.knowledgeMeetsPremise(knowledge, key)) {
-                        runBackwardChain(key, rule.getPremises().get(key).getValue());
+                List<HashMap<String, Condition>> premises = rule.getPremises();
+                for(HashMap<String, Condition> premise : premises) {
+                    for(String key : premise.keySet()) {
+                        if(!rule.knowledgeMeetsGivenPremise(knowledge, key, premise)) {
+                            runBackwardChain(key, premise.get(key).getValue());
+                        }
                     }
                 }
+
                 if(rule.meetsPremises(knowledge)) {
                     rule.fireRule(knowledge);
                     return;
