@@ -18,7 +18,7 @@ public class KnowledgeImpl implements Knowledge {
 
     @Override
     public Boolean hasKeyValue(String key, Object value) {
-        return hashMap.get(key) == value;
+        return hashMap.get(key).toString().equals(value.toString());
     }
 
     @Override

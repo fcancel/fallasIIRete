@@ -75,17 +75,17 @@ public class ReteTest {
     @Test
     public void testFeedlotDiaUnoCalurosoForward() {
         Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(30, 1, 220, 29);
-        List<Rule> rules = buildFeedlotRules(corral);
+        List<Rule> rules = FeedlotRulesBuilder.build(corral);
         ReteAlgorithm rete = new ForwardChain(rules, corral);
         rete.runReteAlgorithm();
 
         FeedlotFood feedlotFood = FoodBuilder.buildFeedlotFood(corral);
-        FeedlotFood expectedFeedlotFood = createExpectedFeedlotFood();
+        FeedlotFood expectedFeedlotFood = createExpectedFeedlotFoodDiaUnoCaluroso();
 
         Assert.assertTrue(feedlotFood.equals(expectedFeedlotFood));
     }
 
-    private FeedlotFood createExpectedFeedlotFood() {
+    private FeedlotFood createExpectedFeedlotFoodDiaUnoCaluroso() {
         FeedlotFood food = new FeedlotFood();
 
         food.setMateriaSeca(62.7);
@@ -98,20 +98,14 @@ public class ReteTest {
         return food;
     }
 
-    private List<Rule> buildFeedlotRules(Knowledge corral) {
-        List<Rule> rules = new LinkedList<Rule>();
-        rules.add(new FeedlotAdaptionFirstDays());
-        rules.add(new FeedlotAdaptionEarlyDays());
-        rules.add(new FeedlotAdaptionMiddleDays());
-        rules.add(new FeedlotAdaptionLateDays());
-        rules.add(new FeedlotPercentagesEarlyDays());
-        rules.add(new FeedlotPercentagesMiddleDays());
-        rules.add(new FeedlotPercentagesLateDays());
-        rules.add(new FeedlotGainWeight(corral));
-        rules.add(new FeedlotTemperatureCold());
-        rules.add(new FeedlotTemperatureHot());
-        rules.add(new FeedlotTemperatureAverage());
+    @Test
+    public void testFeedlotDiaUnoCalurosoBackward() {
+        Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(30, 1, 220, 29);
+        List<Rule> rules = FeedlotRulesBuilder.build(corral);
+        ReteAlgorithm rete = new BackwardChain(rules, corral, Corral.PORCENTAJE_PESO_MATERIA_SECA.name(), 0.01);
+        rete.runReteAlgorithm();
 
-        return rules;
+        Assert.assertTrue(corral.hasKeyValue(Corral.PORCENTAJE_PESO_MATERIA_SECA.name(), 0.01));
     }
+
 }

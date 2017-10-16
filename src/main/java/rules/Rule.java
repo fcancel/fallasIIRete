@@ -40,11 +40,11 @@ public class Rule {
     }
 
     public Boolean hasImplication(String implicationKey, Object implicationValue) {
-        return (implications.containsKey(implicationKey)) ? implications.get(implicationKey) == (implicationValue) : false;
+        return (implications.containsKey(implicationKey)) ? implications.get(implicationKey).toString().equals(implicationValue.toString()) : false;
     }
 
     protected void addPremise(String key, Condition value) {
-        HashMap<String, Condition> premise = new HashMap<String, Condition>();
+        HashMap<String, Condition> premise = new HashMap<>();
         premise.put(key, value);
         premises.add(premise);
     }

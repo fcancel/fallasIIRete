@@ -38,7 +38,6 @@ public class FeedlotFood {
         if (this==object) return true;
         if (this == null) return false;
         if (this.getClass() != object.getClass()) return false;
-        // Class name is Employ & have lastname
         FeedlotFood food = (FeedlotFood) object ;
         return (this.materiaSeca == food.getMateriaSeca()) &&
                 (this.siloSorgo == food.getSiloSorgo()) &&
