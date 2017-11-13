@@ -4,7 +4,7 @@ import knowledge.Knowledge;
 import knowledge.KnowledgeCorralBuilder;
 import knowledge.KnowledgeImpl;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import rete.BackwardChain;
 import rete.ForwardChain;
 import rete.ReteAlgorithm;
@@ -44,7 +44,7 @@ public class ReteTest {
     }
 
     @Test
-    public void testForwardChain() {
+    public void TestForwardChain() {
         Knowledge animal = buildAnimalKnowledge();
         List<Rule> rules = new LinkedList<Rule>();
         rules.add(new DogsHotnessRule());
@@ -55,7 +55,7 @@ public class ReteTest {
     }
 
     @Test
-    public void testFiringMultipleRulesForwardChain() {
+    public void TestFiringMultipleRulesForwardChain() {
         Knowledge animal = buildAnimalKnowledge();
         ReteAlgorithm rete = new ForwardChain(buildRules(), animal);
         rete.runReteAlgorithm();
@@ -64,7 +64,7 @@ public class ReteTest {
     }
 
     @Test
-    public void testBackwardChain() {
+    public void TestBackwardChain() {
         Knowledge animal = buildAnimalKnowledge();
         ReteAlgorithm rete = new BackwardChain(buildRules(), animal, "happiness", Amount.HIGH);
         rete.runReteAlgorithm();
@@ -72,7 +72,7 @@ public class ReteTest {
         Assert.assertTrue(animal.hasKeyValue("happiness", Amount.HIGH));
     }
 
-    private void testCustomFeedlotForward(int headCount, int day, double initialWeight, int temperature, FeedlotFood expectedFood) {
+    private void TestCustomFeedlotForward(int headCount, int day, double initialWeight, int temperature, FeedlotFood expectedFood) {
         Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(headCount, day, initialWeight, temperature);
         ReteAlgorithm rete = new ForwardChain(FeedlotRulesBuilder.build(corral), corral);
         rete.runReteAlgorithm();
@@ -97,43 +97,43 @@ public class ReteTest {
     }
 
     @Test
-    public void testFeedlotDayOneHotForward() {
-        testCustomFeedlotForward(30, 1, 220, 29,
+    public void TestFeedlotDayOneHotForward() {
+        TestCustomFeedlotForward(30, 1, 220, 29,
                 customExpectedFeedlotFood(62.7, 30.1, 23.83, 7.77, 1.0, 38.43));
     }
 
     @Test
-    public void testFeedlotDayTenHotForward() {
-        testCustomFeedlotForward(30, 10, 220, 30,
+    public void TestFeedlotDayTenHotForward() {
+        TestCustomFeedlotForward(30, 10, 220, 30,
                 customExpectedFeedlotFood(125.40, 60.19, 47.65, 15.55, 2.01, 76.86));
     }
 
     @Test
-    public void testFeedlotDayTwentyColdForward() {
-        testCustomFeedlotForward(30, 20, 220, 10,
+    public void TestFeedlotDayTwentyColdForward() {
+        TestCustomFeedlotForward(30, 20, 220, 10,
                 customExpectedFeedlotFood(207.90, 76.92, 101.87, 25.47, 3.64, 102.40));
     }
 
     @Test
-    public void testFeedlotDayTwentyAverageForward() {
-        testCustomFeedlotForward(30, 20, 220, 25,
+    public void TestFeedlotDayTwentyAverageForward() {
+        TestCustomFeedlotForward(30, 20, 220, 25,
                 customExpectedFeedlotFood(198.00, 73.26, 97.02, 24.25, 3.47, 97.52));
     }
 
     @Test
-    public void testFeedlotDayTwentyHotForward() {
-        testCustomFeedlotForward(30, 20, 220, 30,
+    public void TestFeedlotDayTwentyHotForward() {
+        TestCustomFeedlotForward(30, 20, 220, 30,
                 customExpectedFeedlotFood(188.10, 69.60, 92.17, 23.04, 3.29, 92.65));
     }
 
     @Test
-    public void testFeedlotDayFiftyColdForward() {
-        testCustomFeedlotForward(30, 50, 220, 10,
+    public void TestFeedlotDayFiftyColdForward() {
+        TestCustomFeedlotForward(30, 50, 220, 10,
                 customExpectedFeedlotFood(228.38, 60.52, 136.57, 27.41, 3.88, 84.47));
     }
 
     @Test
-    public void testFeedlotDayOneHotBackward() {
+    public void TestFeedlotDayOneHotBackward() {
         Knowledge corral = KnowledgeCorralBuilder.buildCorralKnowledge(30, 1, 220, 29);
         List<Rule> rules = FeedlotRulesBuilder.build(corral);
         ReteAlgorithm rete = new BackwardChain(rules, corral, Corral.PORCENTAGE_WEIGHT_MATERIA_SECA.name(), 0.01);
